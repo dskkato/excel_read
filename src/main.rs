@@ -25,7 +25,7 @@ fn main() {
 
     let dest = sce.with_extension("csv");
     let mut dest = BufWriter::new(File::create(dest).expect("Failed to create output file"));
-    let mut xl: Xlsx<_> = open_workbook(&sce).unwrap();
+    let mut xl: Xlsx<_> = open_workbook(&sce).expect("Cannot find the file");
     let range = xl.worksheet_range(&sheet).unwrap().unwrap();
 
     write_range(&mut dest, &range).unwrap();
