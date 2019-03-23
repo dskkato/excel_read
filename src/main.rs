@@ -20,7 +20,7 @@ fn main() {
     let sce = PathBuf::from(file);
     match sce.extension().and_then(|s| s.to_str()) {
         Some("xlsx") => (),
-        _ => panic!("Expecting an excel file"),
+        _ => panic!("Expecting an .xlsx file"),
     }
 
     let dest = sce.with_extension("csv");
@@ -36,13 +36,13 @@ fn write_range(dest: &mut Write, range: &Range<DataType>) -> ::std::io::Result<(
     let n = range.get_size().1 - 1;
     for r in range.rows() {
         for (i, c) in r.iter().enumerate() {
-            match *c {
+            match c {
                 DataType::Empty => Ok(()),
-                DataType::String(ref s) => write!(dest, "{}", s),
-                DataType::Float(ref f) => write!(dest, "{}", f),
-                DataType::Int(ref i) => write!(dest, "{}", i),
-                DataType::Error(ref e) => write!(dest, "{:?}", e),
-                DataType::Bool(ref b) => write!(dest, "{}", b),
+                DataType::String(s) => write!(dest, "{}", s),
+                DataType::Float(f) => write!(dest, "{}", f),
+                DataType::Int(i) => write!(dest, "{}", i),
+                DataType::Error(e) => write!(dest, "{:?}", e),
+                DataType::Bool(b) => write!(dest, "{}", b),
             }?;
             if i != n {
                 write!(dest, ",")?;
