@@ -1,6 +1,6 @@
 extern crate calamine;
 
-use calamine::{open_workbook_auto, DataType, Range, Reader};
+use calamine::{open_workbook, DataType, Range, Reader, Xlsx};
 use std::env;
 use std::fs::File;
 use std::io::{BufWriter, Write};
@@ -19,13 +19,13 @@ fn main() {
 
     let sce = PathBuf::from(file);
     match sce.extension().and_then(|s| s.to_str()) {
-        Some("xlsx") | Some("xlsm") | Some("xlsb") | Some("xls") => (),
+        Some("xlsx") => (),
         _ => panic!("Expecting an excel file"),
     }
 
     let dest = sce.with_extension("csv");
     let mut dest = BufWriter::new(File::create(dest).expect("Failed to create output file"));
-    let mut xl = open_workbook_auto(&sce).unwrap();
+    let mut xl: Xlsx<_> = open_workbook(&sce).unwrap();
     let range = xl.worksheet_range(&sheet).unwrap().unwrap();
 
     write_range(&mut dest, &range).unwrap();
