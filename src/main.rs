@@ -29,6 +29,7 @@ fn main() {
     let range = xl.worksheet_range(&sheet).unwrap().unwrap();
 
     write_range(&mut dest, &range).unwrap();
+    write_range(&mut std::io::stdout(), &range).unwrap();
 }
 
 fn write_range(dest: &mut Write, range: &Range<DataType>) -> ::std::io::Result<()> {
